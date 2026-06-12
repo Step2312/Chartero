@@ -40,29 +40,3 @@ jobs:
                   name: chartero-dev-xpi
                   path: build/chartero.xpi
                   if-no-files-found: error
-
-    dev-release:
-        if: github.event_name == 'push'
-        needs: build
-        runs-on: ubuntu-latest
-        permissions:
-            contents: write
-
-        steps:
-            - name: Download development build
-              uses: actions/download-artifact@v4
-              with:
-                  name: chartero-dev-xpi
-                  path: build
-
-            - name: Release development build
-              uses: softprops/action-gh-release@v2
-              with:
-                  name: Development Build
-                  tag_name: dev
-                  prerelease: true
-                  make_latest: false
-                  generate_release_notes: true
-                  append_body: |
-                      For testing purposes only, do not use in production. ![cnt](https://img.shields.io/github/downloads/Step2312/Chartero/dev/total)
-                  files: build/chartero.xpi
