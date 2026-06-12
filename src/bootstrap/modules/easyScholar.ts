@@ -332,7 +332,7 @@ async function fetchPublicationRanks(publicationName: string, secretKey: string)
     const json = (await response.json()) as EasyScholarResponse;
     return {
         journal: publicationName,
-        ranks: parsePublicationRanks(json),
+        ranks: parsePublicationRanks(json, publicationName),
     };
 }
 
@@ -347,7 +347,7 @@ async function fetchPublicationRankDetails(
     const response = await fetch(url.toString());
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const json = (await response.json()) as EasyScholarResponse,
-        ranks = parsePublicationRanks(json),
+        ranks = parsePublicationRanks(json, publicationName),
         officialRanks = ranks.filter(rank => rank.source != 'custom' && !isMetricRank(rank)),
         customRanks = ranks.filter(rank => rank.source == 'custom'),
         metrics = ranks.filter(isMetricRank),
@@ -371,14 +371,14 @@ function isMetricRank(rank: RankLabel) {
     return ['sciif', 'sciif5', 'jci', 'esi'].includes(rank.key.toLocaleLowerCase());
 }
 
-function parsePublicationRanks(response: EasyScholarResponse) {
+function parsePublicationRanks(response: EasyScholarResponse, publicationName: string) {
     if (Number(response.code) !== SUCCESS_CODE || String(response.msg).toUpperCase() !== SUCCESS_MESSAGE) {
         return [];
     }
     if (!isRecord(response.data)) return [];
 
     const data = response.data as EasyScholarData,
-        labels = [...parseOfficialRank(data.officialRank), ...parseCustomRank(data.customRank)];
+        labels = [...parseOfficialRank(data.officialRank), ...parseCustomRank(data.customRank, publicationName)];
     return unique(labels);
 }
 
@@ -482,7 +482,7 @@ function officialRankOrder(key: string) {
     return OFFICIAL_RANK_ORDER.get(key.toLocaleLowerCase()) ?? OFFICIAL_RANK_OPTIONS.length;
 }
 
-function parseCustomRank(value: unknown): RankLabel[] {
+function parseCustomRank(value: unknown, publicationName: string): RankLabel[] {
     if (!isRecord(value)) return [];
     const custom = value as CustomRank,
         infos = collectCustomRankInfo(custom.rankInfo),
@@ -494,7 +494,7 @@ function parseCustomRank(value: unknown): RankLabel[] {
         ranks = collectCustomRankValues(custom.rank);
 
     return ranks
-        .map(rank => customRankLabel(rank, infoMap))
+        .map(rank => customRankLabel(rank, infoMap, publicationName))
         .filter((rank): rank is RankLabel => Boolean(rank));
 }
 
@@ -502,7 +502,7 @@ function collectCustomRankInfo(value: unknown): CustomRankInfo[] {
     if (Array.isArray(value)) return value as CustomRankInfo[];
     if (!isRecord(value)) return [];
     return Object.entries(value).map(([uuid, info]) => {
-        if (isRecord(info)) return { uuid, ...info } as CustomRankInfo;
+        if (isRecord(info)) return { ...info, uuid: normalizeText(info.uuid) || uuid } as CustomRankInfo;
         return { uuid, abbName: info } as CustomRankInfo;
     });
 }
@@ -519,14 +519,14 @@ function collectCustomRankValues(value: unknown): string[] {
         .filter(rank => !rank.endsWith('&&&'));
 }
 
-function customRankLabel(value: unknown, infoMap: Map<string, CustomRankInfo>): RankLabel | undefined {
+function customRankLabel(value: unknown, infoMap: Map<string, CustomRankInfo>, publicationName: string): RankLabel | undefined {
     if (typeof value != 'string') return undefined;
     const [uuid, rankIndexText] = value.split('&&&'),
         info = infoMap.get(uuid),
         rankIndex = Number(rankIndexText);
     if (!uuid || !rankIndexText) return undefined;
 
-    const source = normalizeText(info?.abbName) || uuid,
+    const source = normalizeText(info?.abbName) || normalizeText(publicationName),
         rank = normalizeText(
             info && Number.isInteger(rankIndex)
                 ? customRankText(info, rankIndex)
