@@ -14,7 +14,7 @@ Chartero 是一个 Zotero 插件，用于记录和可视化文献阅读情况。
 
 从发布页下载 `chartero.xpi`：
 
-- GitHub: https://github.com/Step2312/Chartero/releases
+- GitHub: https://github.com/JuanZhio/Chartero/releases
 
 在 Zotero 中打开：
 
@@ -88,12 +88,12 @@ chartero@volatile.static
 自动更新地址：
 
 ```text
-https://github.com/Step2312/Chartero/releases/download/update/update.json
+https://github.com/JuanZhio/Chartero/releases/download/update/update.json
 ```
 
 ## 问题反馈
 
-- GitHub Issues: https://github.com/Step2312/Chartero/issues
+- GitHub Issues: https://github.com/JuanZhio/Chartero/issues
 
 ## 许可证
 

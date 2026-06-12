@@ -2,7 +2,7 @@ import { BasicTool, BasicOptions, ManagerTool } from "zotero-plugin-toolkit";
 import { AttachmentRecord, PageRecord } from "./data";
 import { name as packageName } from "../../../../package.json";
 
-const MAIN_ITEM_URL = "https://github.com/Step2312/Chartero";
+const MAIN_ITEM_URL = "https://github.com/JuanZhio/Chartero";
 const HISTORY_LOAD_CONCURRENCY = 12;
 const MAX_RECORD_GAP_FACTOR = 3;
 

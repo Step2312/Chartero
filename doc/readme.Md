@@ -1,19 +1,19 @@
 <h1 align='center'>Chartero</h1>
 <p align='center'>
-    <a href="https://app.codacy.com/gh/Step2312/Chartero/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade">
+    <a href="https://app.codacy.com/gh/JuanZhio/Chartero/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade">
         <img src="https://app.codacy.com/project/badge/Grade/e9a03b20fb90462180218819b41eb34d" alt='代码质量' />
     </a>
     <a href='../src/'>
-        <img src='https://img.shields.io/github/languages/code-size/Step2312/Chartero?logo=vuedotjs' alt='代码量' />
+        <img src='https://img.shields.io/github/languages/code-size/JuanZhio/Chartero?logo=vuedotjs' alt='代码量' />
     </a>
-    <a href='https://github.com/Step2312/Chartero/releases/latest/download/chartero.xpi'>
-        <img src='https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2FStep2312%2FChartero%2Freleases%2Flatest&query=%24.assets%5B0%5D.size&suffix=%20字节&label=插件大小&logo=Zotero&logoColor=%23CC2936' alt='插件' />
+    <a href='https://github.com/JuanZhio/Chartero/releases/latest/download/chartero.xpi'>
+        <img src='https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2FJuanZhio%2FChartero%2Freleases%2Flatest&query=%24.assets%5B0%5D.size&suffix=%20字节&label=插件大小&logo=Zotero&logoColor=%23CC2936' alt='插件' />
     </a>
-    <a href='https://github.com/Step2312/Chartero/releases'>
-        <img src="https://img.shields.io/github/downloads/Step2312/Chartero/total?logo=github" alt='下载' />
+    <a href='https://github.com/JuanZhio/Chartero/releases'>
+        <img src="https://img.shields.io/github/downloads/JuanZhio/Chartero/total?logo=github" alt='下载' />
     </a>
-    <a href='https://github.com/Step2312/Chartero/releases/latest'>
-        <img src="https://img.shields.io/github/downloads/Step2312/Chartero/latest/total" alt='最新版' />
+    <a href='https://github.com/JuanZhio/Chartero/releases/latest'>
+        <img src="https://img.shields.io/github/downloads/JuanZhio/Chartero/latest/total" alt='最新版' />
     </a>
 </p>
 <p align='center'>
@@ -50,17 +50,17 @@ _Chartero_ 这个名字是连接了 **Char**t 与 Zo**tero**，作为一个[Zote
 
 </details>
 
-### [FAQ](https://github.com/Step2312/Chartero/issues)
+### [FAQ](https://github.com/JuanZhio/Chartero/issues)
 
 ## 开发指南
 
 - [![Using Zotero Plugin Template](https://img.shields.io/badge/Using-Zotero%20Plugin%20Template-blue?style=flat-square&logo=github)](https://github.com/windingwind/zotero-plugin-template)
 
-- 图表采用 [![Highcharts](https://img.shields.io/github/package-json/dependency-version/Step2312/Chartero/highcharts?logo=npm)](https://www.npmjs.com/package/highcharts) 生成
-- [Minimap](../src/bootstrap/modules/minimap/)与[图片提取](../src/bootstrap/modules/images/)采用内置 [![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/Step2312/Chartero/dev/%40types%2Freact?logo=npm)](https://zh-hans.react.dev/) 渲染
+- 图表采用 [![Highcharts](https://img.shields.io/github/package-json/dependency-version/JuanZhio/Chartero/highcharts?logo=npm)](https://www.npmjs.com/package/highcharts) 生成
+- [Minimap](../src/bootstrap/modules/minimap/)与[图片提取](../src/bootstrap/modules/images/)采用内置 [![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/JuanZhio/Chartero/dev/%40types%2Freact?logo=npm)](https://zh-hans.react.dev/) 渲染
 - [图片提取](../src/bootstrap/modules/images/)功能在[ChromeWorker](https://devdoc.net/web/developer.mozilla.org/en-US/docs/Web/API/ChromeWorker.html)中调用内置[PDF.js](https://github.com/zotero/pdf.js)实现。
-- UI 组件库使用 [![T-Design](https://img.shields.io/github/package-json/dependency-version/Step2312/Chartero/tdesign-vue-next?logo=npm)](https://tdesign.tencent.com/vue-next)
-- 欲参考纯 JavaScript 版本（适用于 Zotero `6`）请[切换分支](https://github.com/Step2312/Chartero/tree/js_overlay/)
+- UI 组件库使用 [![T-Design](https://img.shields.io/github/package-json/dependency-version/JuanZhio/Chartero/tdesign-vue-next?logo=npm)](https://tdesign.tencent.com/vue-next)
+- 欲参考纯 JavaScript 版本（适用于 Zotero `6`）请[切换分支](https://github.com/JuanZhio/Chartero/tree/js_overlay/)
 
 ### 目录结构
 
