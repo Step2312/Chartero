@@ -4,7 +4,7 @@
             "updates": [
                 {
                     "version": "2.9.7",
-                    "update_link": "https://github.com/Step2312/Chartero/releases/latest/download/chartero.xpi",
+                    "update_link": "https://github.com/JuanZhio/Chartero/releases/latest/download/chartero.xpi",
                     "applications": {
                         "zotero": {
                             "strict_min_version": "7.1.0",

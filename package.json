@@ -5,7 +5,7 @@
     "config": {
         "addonName": "Chartero",
         "addonPref": "extensions.zotero.chartero",
-        "issue": "https://github.com/Step2312/Chartero/issues",
+        "issue": "https://github.com/JuanZhio/Chartero/issues",
         "addonID": "chartero@volatile.static",
         "defaultSettings": {
             "enableRealTimeDashboard": true,
@@ -55,15 +55,15 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Step2312/Chartero.git"
+        "url": "git+https://github.com/JuanZhio/Chartero.git"
     },
     "author": "volatile static",
     "license": "AGPL-2.0-or-later",
     "bugs": {
-        "url": "https://github.com/Step2312/Chartero/issues"
+        "url": "https://github.com/JuanZhio/Chartero/issues"
     },
-    "homepage": "https://github.com/Step2312/Chartero",
-    "releasepage": "https://github.com/Step2312/Chartero/releases/latest/download/chartero.xpi",
+    "homepage": "https://github.com/JuanZhio/Chartero",
+    "releasepage": "https://github.com/JuanZhio/Chartero/releases/latest/download/chartero.xpi",
     "dependencies": {
         "@highcharts/dashboards": "^3.5.0",
         "animejs": "^4.1.3",

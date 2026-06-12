@@ -66,9 +66,9 @@ export default function loadConfig(isDevBuild: boolean = false, isFullBuild: boo
         id: pkg.config.addonID,
         namespace: pkg.name,
         dist: buildDir,
-        updateURL: 'https://github.com/Step2312/Chartero/releases/download/update/update.json',
+        updateURL: 'https://github.com/JuanZhio/Chartero/releases/download/update/update.json',
         xpiDownloadLink:
-            'https://github.com/Step2312/Chartero/releases/download/v{{version}}/{{xpiName}}.xpi',
+            'https://github.com/JuanZhio/Chartero/releases/download/v{{version}}/{{xpiName}}.xpi',
         build: {
             assets: 'addon',
             define: {
@@ -102,7 +102,7 @@ export default function loadConfig(isDevBuild: boolean = false, isFullBuild: boo
                 commit: 'Release v',
             },
             github: {
-                repository: 'Step2312/Chartero',
+                repository: 'JuanZhio/Chartero',
                 updater: 'update',
             },
         },
