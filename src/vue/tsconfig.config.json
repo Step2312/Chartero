@@ -1,0 +1,24 @@
+{
+    "extends": "@tsconfig/node-lts/tsconfig.json",
+    "include": [
+        "vite.config.*",
+        "vitest.config.*",
+        "cypress.config.*",
+        "playwright.config.*"
+    ],
+    "compilerOptions": {
+        "target": "ESNext",
+        "composite": true,
+        "strict": true,
+        "preserveValueImports": false,
+        "importsNotUsedAsValues": "remove",
+        "verbatimModuleSyntax": true,
+        "types": [
+            "vite/client",
+            "node",
+            "highcharts",
+            "tdesign-vue-next/global",
+            "highcharts-vue/types/highcharts-vue"
+        ]
+    }
+}

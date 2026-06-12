@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "build-bootstrap",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "label": "npm: build-bootstrap",
+            "isBackground": true
+        },
+        {
+            "type": "npm",
+            "script": "dev",
+            "label": "npm: dev",
+            "isBackground": true,
+            "problemMatcher": [
+                "$vite"
+            ]
+        },
+        {
+            "type": "npm",
+            "script": "lint",
+            "problemMatcher": [
+                "$eslint-stylish"
+            ],
+            "label": "npm: lint",
+            "detail": "eslint . --ext .ts,.tsx,.vue"
+        }
+    ]
+}

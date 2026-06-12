@@ -1,0 +1,33 @@
+{
+    "extends": "@vue/tsconfig/tsconfig.dom.json",
+    "include": [
+        "./**/*.ts",
+        "./**/*.vue",
+        "../../node_modules/zotero-types/index.d.ts"
+    ],
+    "exclude": [
+        "vite.config.ts",
+        "test/vite.config.ts"
+    ],
+    "compilerOptions": {
+        "baseUrl": ".",
+        "jsx": "preserve",
+        "jsxImportSource": "vue",
+        "paths": {
+            "@/*": [
+                "./utility/*"
+            ],
+            "$/*": [
+                "../bootstrap/modules/*"
+            ]
+        },
+        "skipLibCheck": true,
+        "preserveValueImports": false,
+        "importsNotUsedAsValues": "remove"
+    },
+    "references": [
+        {
+            "path": "./tsconfig.config.json"
+        }
+    ]
+}

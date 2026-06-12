@@ -1,0 +1,67 @@
+{
+    "cSpell.words": [
+        "animejs",
+        "Chartero",
+        "denormalize",
+        "epub",
+        "gantt",
+        "greenfrog",
+        "groupbox",
+        "highcharts",
+        "menuseparator",
+        "modeless",
+        "Networkgraph",
+        "Packedbubble",
+        "popupshowing",
+        "prefs",
+        "Sankey",
+        "solidgauge",
+        "tdesign",
+        "toolbarbutton",
+        "toolbaritem",
+        "tooltiptext",
+        "unfiled",
+        "unplugin",
+        "wordcloud",
+        "Zotero"
+    ],
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.suggestSelection": "recentlyUsed",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[vue]": {
+        "editor.defaultFormatter": "Vue.volar",
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    },
+    "[sass]": {
+        "editor.defaultFormatter": "syler.sass-indented"
+    },
+    "eslint.ignoreUntitled": false,
+    "eslint.problems.shortenToSingleLine": true,
+    "markdownlint.config": {
+        "MD033": false
+    },
+}

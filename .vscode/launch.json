@@ -1,0 +1,43 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Vue",
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "url": "http://localhost:5173/",
+            "firefoxExecutable": "C:\\Program Files\\Firefox Developer Edition\\firefox.exe",
+            "pathMappings": [
+                {
+                    "url": "http://localhost:5173/@vite/client.ts",
+                    "path": "${workspaceFolder}/src/modules/vite/packages/vite/src/client/client.ts"
+                },
+                {
+                    "url": "http://localhost:5173/@fs/*/*/Chartero/src",
+                    "path": "${workspaceFolder}/src"
+                },
+                {
+                    "url": "http://localhost:5173/@fs/*/*/Chartero/node_modules/tdesign-vue-next",
+                    "path": "${workspaceFolder}/src/modules/tdesign"
+                },
+                {
+                    "url": "http://localhost:5173/@fs/*/*/Chartero/node_modules",
+                    "path": "${workspaceFolder}/node_modules"
+                },
+                {
+                    "url": "http://localhost:5173",
+                    "path": "${workspaceFolder}/src/vue/test"
+                },
+                {
+                    "url": "http://localhost:5173/@fs/*/*/Chartero/",
+                    "path": "${workspaceFolder}"
+                }
+            ],
+            "preLaunchTask": "npm: dev"
+        }
+    ]
+}

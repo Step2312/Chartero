@@ -1,0 +1,271 @@
+<script lang="ts">
+import { Chart } from 'highcharts-vue';
+import type {
+    Options,
+    SeriesSankeyOptions,
+    SeriesSankeyPointOptionsObject,
+    SeriesSankeyNodesOptionsObject,
+    SankeyNodeObject,
+} from 'highcharts';
+import { toTimeString } from '$/utils';
+import { creator2str, helpMessageOption } from '@/utils';
+import HistoryAnalyzer from '$/history/analyzer';
+import Highcharts from '@/highcharts';
+import DualSelect from './dualSelect.vue';
+import type { AttachmentHistory } from '$/history/history';
+
+const MAX_SANKEY_ITEMS = 180;
+const MAX_SANKEY_LINKS = 80;
+const MAX_TOOLTIP_ITEMS = 12;
+
+interface ItemInfo {
+    firstCreator: string;
+    lastCreator: string;
+    journal: string;
+    itemID: number;
+    totalSeconds: number;
+}
+
+function formatter(this: Highcharts.Point) {
+    const items: ItemInfo[] | undefined = (this as any).custom?.items,
+        totalCount: number = (this as any).custom?.totalCount ?? items?.length ?? 0,
+        colName = [addon.locale.firstCreator, addon.locale.lastCreator, addon.locale.journal],
+        borderStyle = `border-left: 1px solid ${this.color}; border-top: solid ${this.color};`,
+        breakStyle = 'white-space: normal;',
+        tdStyle = `style='${borderStyle} ${breakStyle}'`,
+        table = items
+            ?.slice(0, MAX_TOOLTIP_ITEMS)
+            ?.map(it => {
+                const title = Zotero.Items.get(it.itemID).getField('title');
+                return `<tr>
+                <td ${tdStyle}>${title}</td>
+                <td ${tdStyle}>${it.journal}</td>
+                <td ${tdStyle}>${it.firstCreator}</td>
+                <td ${tdStyle}>${it.lastCreator}</td>
+                <td ${tdStyle}>${toTimeString(it.totalSeconds)}</td>
+            </tr>`;
+            })
+            .join('');
+    if (table)
+        return `
+            <table>
+                <thead>
+                    <tr>
+                        <th>${addon.locale.itemTitle}</th>
+                        <th>${addon.locale.journal}</th>
+                        <th>${addon.locale.firstCreator}</th>
+                        <th>${addon.locale.lastCreator}</th>
+                        <th>${addon.locale.totalTime}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${table}
+                </tbody>
+            </table>
+            ${totalCount > MAX_TOOLTIP_ITEMS ? `<div>+${totalCount - MAX_TOOLTIP_ITEMS}</div>` : ''}
+        `;
+    return `
+            <span style='color: ${this.color}'>\u25CF </span>
+            ${colName[(this as SankeyNodeObject).column]}:
+            <b> ${this.name}</b>
+        `;
+}
+
+export default {
+    components: { Chart, DualSelect },
+    props: {
+        history: {
+            type: Array<Zotero.Item>,
+            required: true,
+        },
+        itemHistories: {
+            type: Array<AttachmentHistory[]>,
+            default: () => [],
+        },
+        dataVersion: {
+            type: Number,
+            default: 0,
+        },
+        theme: Object,
+    },
+    data() {
+        return {
+            locale: addon.locale,
+            // lastAuthorIdx: addon.getPref('lastAuthorSankey'),
+        };
+    },
+    computed: {
+        noHistoryFound() {
+            return this.history.length === 0;
+        },
+        chartKey() {
+            const historyCount = this.itemHistories.reduce((sum, his) => sum + his.length, 0),
+                firstID = this.history[0]?.id ?? 0,
+                lastID = this.history.at(-1)?.id ?? 0;
+            return `${this.dataVersion}-${JSON.stringify(this.theme)}-${this.history.length}-${historyCount}-${firstID}-${lastID}`;
+        },
+        chartOpts() {
+            const itemData = this.history
+                    .map((item, index) => {
+                        const firstCreator = item.firstCreator,
+                            corrAuthorIdx = addon.extraField.getExtraField(item, 'CorrespondingAuthorIndex'),
+                            lastCreatorData = item
+                                .getCreatorsJSON()
+                                .at(corrAuthorIdx ? parseInt(corrAuthorIdx) : -1),
+                            lastCreator = lastCreatorData && creator2str(lastCreatorData),
+                            journal =
+                                item.getField('journalAbbreviation') ||
+                                item.getField('publicationTitle') ||
+                                item.getField('conferenceName') ||
+                                item.getField('proceedingsTitle') ||
+                                item.getField('university'),
+                            itemHistory = this.itemHistories[index] ?? [],
+                            totalSeconds = new HistoryAnalyzer(itemHistory).totalS;
+                        // addon.log({firstCreator, lastCreator, journal, totalSeconds});
+                        return { itemID: item.id, firstCreator, lastCreator, journal, totalSeconds };
+                    })
+                    .filter(
+                        it =>
+                            it.firstCreator &&
+                            it.lastCreator &&
+                            it.journal &&
+                            it.firstCreator !== it.lastCreator,
+                    )
+                    .sort((a, b) => b.totalSeconds - a.totalSeconds)
+                    .slice(0, MAX_SANKEY_ITEMS) as Array<ItemInfo>,
+                first2last: Record<string, ItemInfo[]> = {},
+                last2journal: Record<string, ItemInfo[]> = {},
+                data = new Array<SeriesSankeyPointOptionsObject>(),
+                nodes = new Array<SeriesSankeyNodesOptionsObject>(),
+                firstCreatorSet = new Set<string>(),
+                lastCreatorSet = new Set<string>(),
+                journalSet = new Set<string>(),
+                usedFirstCreatorSet = new Set<string>(),
+                usedLastCreatorSet = new Set<string>(),
+                usedJournalSet = new Set<string>(),
+                colors: string[] = this.theme!.colors,
+                colorMap: Record<string, string> = {};
+            for (const item of itemData) {
+                const first_last = item.firstCreator + '\n' + item.lastCreator,
+                    last_journal = item.lastCreator + '\n' + item.journal,
+                    f2l = (first2last[first_last] ??= new Array<ItemInfo>()),
+                    l2j = (last2journal[last_journal] ??= new Array<ItemInfo>());
+                f2l.push(item);
+                l2j.push(item);
+                firstCreatorSet.add(item.firstCreator);
+                lastCreatorSet.add(item.lastCreator);
+                journalSet.add(item.journal);
+            }
+            let colorCnt = 0;
+            // 首先分配通讯作者的颜色
+            for (const lastCreator of lastCreatorSet) {
+                colorMap[lastCreator] = colors[colorCnt];
+                nodes.push({ id: lastCreator, column: 1, color: colors[colorCnt] });
+                ++colorCnt;
+                colorCnt %= 10;
+            }
+            // 然后根据通讯的颜色分配条目的颜色
+            for (const [key, val] of [...Object.entries(first2last), ...Object.entries(last2journal)]
+                .sort(([, a], [, b]) => b.length - a.length)
+                .slice(0, MAX_SANKEY_LINKS)) {
+                const [from, to] = key.split('\n'),
+                    col = first2last[key] ? 0 : 1; // powered by GitHub Copilot
+                if (col) {
+                    usedLastCreatorSet.add(from);
+                    usedJournalSet.add(to);
+                } else {
+                    usedFirstCreatorSet.add(from);
+                    usedLastCreatorSet.add(to);
+                }
+                data.push({
+                    from,
+                    to,
+                    weight: val.length,
+                    color: colorMap[col ? from : to],
+                    custom: {
+                        itemIDs: val.map(it => it.itemID),
+                        items: val
+                            .slice()
+                            .sort((a, b) => b.totalSeconds - a.totalSeconds)
+                            .slice(0, MAX_TOOLTIP_ITEMS),
+                        totalCount: val.length,
+                    },
+                });
+            }
+
+            // 最后根据条目颜色合成其他结点颜色
+            function mixColors(items: Array<[string, ItemInfo[]]>) {
+                const colors = items.flatMap(([_, val]) =>
+                    val.map(i => Highcharts.color(colorMap[i.lastCreator])),
+                );
+                let mixedColor = colors[0];
+                for (let i = 1; i < colors.length; ++i)
+                    mixedColor = Highcharts.color(mixedColor.tweenTo(colors[i], 1 / colors.length));
+                return mixedColor.get();
+            }
+            firstCreatorSet.clear();
+            usedFirstCreatorSet.forEach(name => firstCreatorSet.add(name));
+            journalSet.clear();
+            usedJournalSet.forEach(name => journalSet.add(name));
+            lastCreatorSet.clear();
+            usedLastCreatorSet.forEach(name => lastCreatorSet.add(name));
+            for (const firstCreator of firstCreatorSet) {
+                const color = mixColors(
+                    Object.entries(first2last).filter(([key, _]) => key.startsWith(firstCreator)),
+                );
+                nodes.push({ id: firstCreator, column: 0, color });
+            }
+            for (const journal of journalSet) {
+                const color = mixColors(
+                    Object.entries(last2journal).filter(([key, _]) => key.endsWith(journal)),
+                );
+                nodes.push({ id: journal, column: 2, color });
+            }
+            const maxRows = Math.max(
+                journalSet.size,
+                firstCreatorSet.size,
+                lastCreatorSet.size,
+                // ...[0, 1, 2].map(col => nodes.filter(n => n.column === col).length)
+            );
+            // addon.log(nodes)
+            return {
+                chart: { animation: undefined, height: maxRows * 26 + 50 },
+                exporting: { menuItemDefinitions: helpMessageOption(this.locale.doc.sankey) },
+                subtitle: { text: this.locale.chartTitle.sankey },
+                tooltip: { useHTML: true, outside: true, formatter },
+                series: [
+                    {
+                        type: 'sankey',
+                        data,
+                        nodes,
+                    } as SeriesSankeyOptions,
+                ],
+            } as Options;
+        },
+        options() {
+            return Highcharts.merge(this.chartOpts, this.theme);
+        },
+    },
+};
+</script>
+
+<template>
+  <div>
+    <h1 v-if="noHistoryFound" class="center-label">
+      {{ locale.noHistoryFound }}
+    </h1>
+    <t-space v-else direction="vertical" style="width: 100%" size="small">
+      <DualSelect :items="history" />
+      <Chart :key="chartKey" :options="options" />
+      <!-- <Chart :options="wheelOptions" :key="theme"></Chart> -->
+    </t-space>
+  </div>
+</template>
+
+<style scoped>
+.center-label {
+    text-align: center;
+    position: relative;
+    top: 38%;
+}
+</style>

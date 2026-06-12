@@ -1,0 +1,15 @@
+{
+    "description": "__description__",
+    "homepage_url": "__homepage__",
+    "author": "__author__",
+    "icons": {
+        "48": "content/icons/icon32.png",
+        "96": "content/icons/icon.svg"
+    },
+    "applications": {
+        "zotero": {
+            "strict_min_version": "9.0",
+            "strict_max_version": "10.1"
+        }
+    }
+}

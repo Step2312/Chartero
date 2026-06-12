@@ -1,0 +1,135 @@
+.chartero-preferences-pane-box {
+    border: gray dotted 1px;
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.03);
+    min-height: 16px;
+}
+
+.chartero-preferences-pane-form {
+    display: grid;
+    grid-template-columns: max-content minmax(220px, 1fr);
+    gap: 8px 12px;
+    align-items: center;
+    margin: 8px;
+}
+
+.chartero-preferences-pane-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.chartero-preferences-pane-number {
+    width: 80px;
+}
+
+.chartero-preferences-pane-tag-filter {
+    display: grid;
+    gap: 8px;
+    margin: 8px;
+}
+
+.chartero-preferences-pane-tag-row {
+    align-items: center;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: minmax(220px, 1fr) max-content;
+}
+
+.chartero-preferences-pane-tag-select {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+}
+
+.chartero-preferences-pane-chip-box {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 30px;
+    padding: 6px;
+}
+
+.chartero-preferences-pane-description {
+    grid-column: 1 / -1;
+    margin: 2px 0 0;
+    color: var(--text-color-deemphasized, GrayText);
+    line-height: 1.45;
+}
+
+.chartero-preferences-pane-check-grid {
+    display: grid;
+    gap: 10px;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.chartero-preferences-pane-rank-group {
+    background: rgba(0, 0, 0, 0.025);
+    border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.chartero-preferences-pane-rank-group-title {
+    color: var(--text-color-deemphasized, GrayText);
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+.chartero-preferences-pane-rank-chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chartero-preferences-pane-rank-chip {
+    align-items: center;
+    background: var(--material-background, Field);
+    border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+    border-radius: 999px;
+    box-sizing: border-box;
+    display: inline-flex;
+    gap: 3px;
+    line-height: 20px;
+    max-width: 100%;
+    min-width: 0;
+    padding: 2px 8px 2px 5px;
+}
+
+.chartero-preferences-pane-rank-chip input {
+    margin: 0;
+}
+
+.chartero-preferences-pane-rank-chip span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chartero-preferences-pane-ignoredTag {
+    background: color-mix(in srgb, Highlight 12%, Field);
+    border: 1px solid color-mix(in srgb, Highlight 35%, transparent);
+    border-radius: 999px;
+    color: var(--text-color, FieldText);
+    cursor: pointer;
+    line-height: 18px;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 3px 9px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chartero-preferences-pane-ignoredPattern {
+    background: color-mix(in srgb, AccentColor 10%, Field);
+    border-color: color-mix(in srgb, AccentColor 30%, transparent);
+    font-family: var(--monospace-font-family, monospace);
+}
+
+.chartero-preferences-pane-ignoredTag:hover {
+    transition: all 150ms;
+    background: Highlight;
+    color: HighlightText;
+}

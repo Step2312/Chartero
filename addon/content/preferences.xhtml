@@ -1,0 +1,104 @@
+<linkset>
+    <html:link rel="localization" href="chartero-prefs.ftl" />
+</linkset>
+<vbox id="zotero-prefpane-__addonName__"
+    onload="Zotero.Notifier.trigger('redraw', 'setting', ['__addonName__'], window);">
+    <vbox class="main-section">
+        <html:h1 data-l10n-id="plotTitle"></html:h1>
+        <groupbox>
+            <checkbox native="true" data-l10n-id="enableRealTimeDashboard" __enableRealTimeDashboard__ />
+            <checkbox native="true" data-l10n-id="allImages" __enableAllImages__ />
+            <checkbox native="true" data-l10n-id="minimap" __enableMinimap__ />
+            <checkbox native="true" data-l10n-id="readerAlert" __enableReaderAlert__ />
+
+            <html:label data-l10n-id="maxSummaryItems" for="chartero-maxSummaryItems"></html:label>
+            <html:input __maxSummaryItems__></html:input>
+            <br />
+            <html:label data-l10n-id="completeThreshold" for="chartero-completeThreshold"></html:label>
+            <html:input __completeThreshold__></html:input>
+        </groupbox>
+        <groupbox>
+            <label>
+                <html:h2 data-l10n-id="easyScholarTitle"></html:h2>
+            </label>
+            <html:div class="chartero-preferences-pane-form">
+                <html:label data-l10n-id="easyScholarSecretKey" for="chartero-easyScholarSecretKey"></html:label>
+                <html:input class="chartero-preferences-pane-input" __easyScholarSecretKey__ type="password"
+                    autocomplete="off"></html:input>
+
+                <html:label data-l10n-id="easyScholarRankLimit" for="chartero-easyScholarRankLimit"></html:label>
+                <html:input class="chartero-preferences-pane-number" __easyScholarRankLimit__ type="number" min="1"
+                    step="1"></html:input>
+
+                <checkbox native="true" data-l10n-id="easyScholarShowOfficialSelected"
+                    __easyScholarShowOfficialSelected__ />
+                <checkbox native="true" data-l10n-id="easyScholarShowOfficialAllFallback"
+                    __easyScholarShowOfficialAllFallback__ />
+                <checkbox native="true" data-l10n-id="easyScholarShowCustom" __easyScholarShowCustom__ />
+
+                <html:label data-l10n-id="easyScholarOfficialRanks"></html:label>
+                <html:div id="chartero-preferences-pane-easyScholar-ranks"
+                    class="chartero-preferences-pane-check-grid"></html:div>
+
+                <html:p class="chartero-preferences-pane-description" data-l10n-id="easyScholarDescription"></html:p>
+            </html:div>
+        </groupbox>
+        <groupbox>
+            <label>
+                <hbox>
+                    <html:h2 data-l10n-id="excludedTags"></html:h2>
+                    <toolbarbutton id="chartero-preferences-pane-refreshTagsTable"
+                        style="list-style-image: url('chrome://zotero/skin/arrow_refresh.png');"></toolbarbutton>
+                </hbox>
+            </label>
+            <html:div class="chartero-preferences-pane-tag-filter">
+                <html:div class="chartero-preferences-pane-tag-row">
+                    <html:select id="chartero-preferences-pane-tagSelect"
+                        class="chartero-preferences-pane-tag-select"></html:select>
+                    <html:button id="chartero-preferences-pane-addExcludedTag" native="true"
+                        data-l10n-id="addExcludedTag"></html:button>
+                </html:div>
+                <html:div id="chartero-preferences-pane-excludedTagsTable"
+                    class="chartero-preferences-pane-box chartero-preferences-pane-chip-box"></html:div>
+                <html:div class="chartero-preferences-pane-tag-row">
+                    <html:input id="chartero-preferences-pane-tagPatternInput"
+                        class="chartero-preferences-pane-tag-select" data-l10n-id="excludedTagRegexPlaceholder"
+                        data-l10n-attrs="placeholder">
+                    </html:input>
+                    <html:button id="chartero-preferences-pane-addExcludedTagPattern" native="true"
+                        data-l10n-id="addExcludedTagRegex"></html:button>
+                </html:div>
+                <html:div id="chartero-preferences-pane-excludedTagPatternsTable"
+                    class="chartero-preferences-pane-box chartero-preferences-pane-chip-box"></html:div>
+            </html:div>
+        </groupbox>
+    </vbox>
+    <vbox class="main-section">
+        <html:h1 data-l10n-id="recordTitle"></html:h1>
+        <groupbox>
+            <html:label data-l10n-id="scanPeriod" for="chartero-preferences-pane-scanPeriod"></html:label>
+            <html:input __scanPeriod__ type="number" min="1" step="1"></html:input>
+        </groupbox>
+        <groupbox>
+            <html:label data-l10n-id="recordTimeout" for="chartero-preferences-pane-scanTimeout"></html:label>
+            <html:input __scanTimeout__ type="number" min="1" step="1"></html:input>
+        </groupbox>
+    </vbox>
+    <vbox class="main-section">
+        <html:h1 data-l10n-id="storageTitle"></html:h1>
+        <groupbox>
+            <hbox>
+                <html:label id="chartero-preferences-pane-history-size" data-l10n-id="historySize"></html:label>
+                <button id="chartero-preferences-pane-history-compress" data-l10n-id="compressHistory"
+                    style="margin: 8px;" native="true" align="center"></button>
+            </hbox>
+        </groupbox>
+    </vbox>
+    <vbox class="main-section">
+        <html:h1 data-l10n-id="about"></html:h1>
+        <hbox>
+            <label>Version __buildVersion__ | Changes __buildChangeCount__ | __buildTime__</label>
+        </hbox>
+        __devBuild__
+    </vbox>
+</vbox>
