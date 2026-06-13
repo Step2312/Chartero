@@ -103,6 +103,7 @@ interface RankLabel {
     source: RankSource;
     key: string;
     label: string;
+    value?: string;
 }
 
 export interface JournalRankDetails {
@@ -158,7 +159,7 @@ export function getVisiblePublicationRanks(item: Zotero.Item) {
         storedRanks = getStoredPublicationRanks(item);
 
     const ranks = getJournalRanks(journal);
-    if (ranks.length) return formatRankLabels(ranks);
+    if (ranks.length) return formatRankLabels(ranks, item);
 
     if (storedRanks) {
         if (shouldFetchRanks(journal)) schedulePublicationRankUpdate(item);
@@ -176,8 +177,18 @@ function limitRankText(ranks: string) {
         .join(' | ');
 }
 
-function formatRankLabels(ranks: RankLabel[]) {
-    return limitRankLabels(filterRankLabels(ranks)).map(rank => rank.label).join(' | ');
+function formatRankLabels(ranks: RankLabel[], item?: Zotero.Item) {
+    return limitRankLabels(filterRankLabels(getDisplayRankLabels(ranks, item))).map(rank => rank.label).join(' | ');
+}
+
+function getDisplayRankLabels(ranks: RankLabel[], item?: Zotero.Item) {
+    const thesisRankSource = item ? getThesisRankSource(item) : '';
+    if (!thesisRankSource) return ranks;
+    return ranks.map(rank => {
+        if (rank.source != 'custom') return rank;
+        const value = rank.value || rankValue(rank.label);
+        return value ? { ...rank, key: thesisRankSource, label: `${thesisRankSource} ${value}` } : rank;
+    });
 }
 
 function limitRankLabels(ranks: RankLabel[]) {
@@ -309,11 +320,10 @@ async function savePublicationRanks(cacheKey: string, ranks: RankLabel[]) {
     const itemIDs = pendingJournalItems.get(cacheKey);
     if (!itemIDs?.size) return;
 
-    const rankText = formatRankLabels(ranks);
-    if (!rankText) return;
-
     await Promise.all(Array.from(itemIDs).map(async itemID => {
         const item = Zotero.Items.get(itemID);
+        const rankText = item ? formatRankLabels(ranks, item) : '';
+        if (!rankText) return;
         if (!item || addon.extraField.getExtraField(item, RANK_FIELD) == rankText) return;
         await addon.extraField.setExtraField(item, RANK_FIELD, rankText);
     }));
@@ -348,8 +358,9 @@ async function fetchPublicationRankDetails(
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const json = (await response.json()) as EasyScholarResponse,
         ranks = parsePublicationRanks(json, publicationName),
-        officialRanks = ranks.filter(rank => rank.source != 'custom' && !isMetricRank(rank)),
-        customRanks = ranks.filter(rank => rank.source == 'custom'),
+        displayRanks = getDisplayRankLabels(ranks, item),
+        officialRanks = displayRanks.filter(rank => rank.source != 'custom' && !isMetricRank(rank)),
+        customRanks = displayRanks.filter(rank => rank.source == 'custom'),
         metrics = ranks.filter(isMetricRank),
         esiRank = metrics.find(rank => rank.key.toLocaleLowerCase() == 'esi');
 
@@ -365,6 +376,12 @@ async function fetchPublicationRankDetails(
 
 function rankValue(label: string) {
     return label.split(/\s+/).slice(1).join(' ') || label;
+}
+
+function getThesisRankSource(item: Zotero.Item) {
+    if (item.itemType != 'thesis') return '';
+    const university = item.getField('university');
+    return normalizeText(university) || getPublicationName(item);
 }
 
 function isMetricRank(rank: RankLabel) {
@@ -521,7 +538,7 @@ function collectCustomRankValues(value: unknown): string[] {
 
 function customRankLabel(value: unknown, infoMap: Map<string, CustomRankInfo>, publicationName: string): RankLabel | undefined {
     if (typeof value != 'string') return undefined;
-    const [uuid, rankIndexText] = value.split('&&&'),
+    const [uuid = '', rankIndexText = ''] = value.split('&&&'),
         info = infoMap.get(uuid),
         rankIndex = Number(rankIndexText);
     if (!uuid || !rankIndexText) return undefined;
@@ -533,7 +550,7 @@ function customRankLabel(value: unknown, infoMap: Map<string, CustomRankInfo>, p
                 : rankIndexText
         );
     if (!source || !rank) return undefined;
-    return { source: 'custom', key: source, label: `${source} ${rank}` };
+    return { source: 'custom', key: source, label: `${source} ${rank}`, value: rank };
 }
 
 function customRankText(info: CustomRankInfo, rankIndex: number) {

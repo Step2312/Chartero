@@ -83,10 +83,10 @@
       </div>
       <div v-if="customItems.length" class="custom-ranks">
         <div
-            v-for="item in customItems"
-            :key="item.key + item.label + item.value"
-            class="custom-rank"
-            :title="item.label + ': ' + item.value"
+          v-for="item in customItems"
+          :key="item.key + item.label + item.value"
+          class="custom-rank"
+          :title="item.label + ': ' + item.value"
         >
           <span>{{ item.label || '自定义' }}</span>
           <button :class="getBadgeClass(item.value)">{{ item.value }}</button>
