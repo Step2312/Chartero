@@ -1,0 +1,62 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    },
+    "files": {
+        "includes": [
+            "**",
+            "!.vscode",
+            "!build",
+            "!node_modules",
+            "!package-lock.json",
+            "!src/vue/components.d.ts",
+            "!src/vue/auto-imports.d.ts",
+            "!typings",
+            "!addon/content/icons/**/*.svg"
+        ]
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 110,
+        "lineEnding": "crlf"
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "single",
+            "arrowParentheses": "asNeeded",
+            "trailingCommas": "all"
+        }
+    },
+    "json": {
+        "formatter": {
+            "trailingCommas": "none"
+        }
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "preset": "none",
+            "correctness": {
+                "noConstAssign": "error",
+                "noConstantCondition": "error",
+                "noInvalidUseBeforeDeclaration": "error",
+                "noSelfAssign": "error",
+                "noSwitchDeclarations": "error",
+                "noUnreachable": "error"
+            },
+            "suspicious": {
+                "noDebugger": "error",
+                "noDuplicateCase": "error",
+                "noDuplicateObjectKeys": "error",
+                "noFallthroughSwitchClause": "error",
+                "noGlobalIsNan": "warn",
+                "noSparseArray": "error"
+            }
+        }
+    }
+}

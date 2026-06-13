@@ -49,7 +49,10 @@
         "dev": "vite ./src/vue/test",
         "release": "tsx tools/release.ts",
         "preview": "vite preview ./src/vue",
-        "lint": "eslint . --ext .vue,.ts,.tsx,.js --fix",
+        "lint": "biome lint .",
+        "lint:fix": "biome lint . --write",
+        "format": "biome format . --write",
+        "prepare": "husky",
         "git-modules": "git submodule update --init --recursive",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -76,6 +79,7 @@
         "zotero-plugin-toolkit": "^5.0.1"
     },
     "devDependencies": {
+        "@biomejs/biome": "^2.5.0",
         "@gitee/typescript-sdk-v5": "5.4.85",
         "@tsconfig/node-lts": "^22.0.2",
         "@types/node": "^24.3.0",
@@ -92,6 +96,8 @@
         "eslint": "^8.57.1",
         "eslint-plugin-mozilla": "^3.7.5",
         "eslint-plugin-vue": "^9.33.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.0.7",
         "lodash": "^4.17.21",
         "prettier": "3.6.2",
         "tsx": "^4.20.5",
@@ -166,6 +172,17 @@
         "printWidth": 110,
         "singleQuote": true,
         "arrowParens": "avoid"
+    },
+    "lint-staged": {
+        "{src,tools,addon}/**/*.{js,ts,tsx,vue,json,jsonc,css,scss,sass,html,md}": [
+            "biome check --write --no-errors-on-unmatched"
+        ],
+        "*.{js,ts,tsx,vue,css,scss,sass,html,md}": [
+            "biome check --write --no-errors-on-unmatched"
+        ],
+        "!(*-lock).{json,jsonc}": [
+            "biome check --write --no-errors-on-unmatched"
+        ]
     },
     "zotero-plugin": {
         "source": [
