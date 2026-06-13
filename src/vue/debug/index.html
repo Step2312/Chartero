@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chartero 调试</title>
+  <style>
+    body {
+      margin: 0;
+      background: var(--td-bg-color-page);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module">
+    import { createApp } from 'vue';
+    import App from './main.vue';
+    import 'tdesign-vue-next/es/style/index.css';
+    createApp(App).mount('#app');
+  </script>
+  <script>Zotero = addon.getGlobal('Zotero');</script>
+</body>
+
+</html>

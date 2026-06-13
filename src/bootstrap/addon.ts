@@ -27,6 +27,7 @@ export default class Addon extends BasicTool {
 
     readonly rootURI = rootURI;
     overviewTabID?: string;
+    debugTabID?: string;
     notifierID?: string;
     private _worker?: WorkerManager;
     private initialized = false;
@@ -145,6 +146,7 @@ export default class Addon extends BasicTool {
         }
         this.patchSearch.disable();
         this.overviewTabID && G('Zotero_Tabs').close(this.overviewTabID);
+        this.debugTabID && G('Zotero_Tabs').close(this.debugTabID);
         this.notifierID && Zotero.Notifier.unregisterObserver(this.notifierID);
         this.prefsObserverIDs.forEach(id => Zotero.Prefs.unregisterObserver(id));
         this.listeners.forEach(({ target, type, listener }) =>
